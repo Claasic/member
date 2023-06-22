@@ -5,9 +5,9 @@ import com.member.request.ModifyMemberRequest;
 import com.member.request.SaveMemberRequest;
 import com.member.service.MemberService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/members")
@@ -20,7 +20,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveMember(@Valid SaveMemberRequest request) {
+    public ResponseEntity<Void> saveMember(@Validated SaveMemberRequest request) {
         validateSamePasswordConfirm(request);
         memberService.saveMember(request);
         return ResponseEntity.ok().build();
