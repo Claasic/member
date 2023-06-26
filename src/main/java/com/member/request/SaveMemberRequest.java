@@ -24,7 +24,6 @@ public class SaveMemberRequest {
     private String password;
 
     @NotBlank(message = "패스워드 확인 미입력")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "숫자, 영문 대소문자, 특수문자를 포함한 8자 이상의 비밀번호를 입력해주세요.")
     private String passwordConfirm;
 
     @Builder
