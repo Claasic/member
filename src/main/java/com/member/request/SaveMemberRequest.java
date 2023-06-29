@@ -11,6 +11,7 @@ import javax.validation.constraints.Pattern;
 public class SaveMemberRequest {
 
     @Email(message = "형식에 맞지 않은 이메일")
+    @NotBlank(message = "이메일 미입력")
     private String email;
 
     @NotBlank(message = "이름 미입력")
