@@ -1,5 +1,6 @@
 package com.member.fixture;
 
+import com.member.request.ModifyMemberRequest;
 import com.member.request.SaveMemberRequest;
 
 public class MemberFixture {
@@ -61,5 +62,11 @@ public class MemberFixture {
             .nickname("테스트닉네임")
             .name("홍길동")
             .password("Test@5790")
+            .build();
+
+    public static final ModifyMemberRequest MODIFY_SUCCESS_MEMBER_REQUEST = ModifyMemberRequest.builder()
+            .nickname("테스트 수정 성공 닉네임")
+            .password("Test@5790")
+            .passwordConfirm("Test@5790")
             .build();
 }

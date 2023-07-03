@@ -1,7 +1,9 @@
 package com.member.service;
 
 import com.member.entity.Member;
+import com.member.exception.MemberNotFindException;
 import com.member.repository.MemberRepository;
+import com.member.request.ModifyMemberRequest;
 import com.member.request.SaveMemberRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,12 @@ public class MemberServiceImpl implements MemberService {
                 .password(encoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
                 .build());
+    }
+
+    @Override
+    public void modifyMember(Long memberId, ModifyMemberRequest request) {
+        Member findMember = memberRepository.findById(memberId).orElseThrow(() ->
+                new MemberNotFindException("회원이 존재하지 않습니다."));
+        findMember.modifyMember(request);
     }
 }

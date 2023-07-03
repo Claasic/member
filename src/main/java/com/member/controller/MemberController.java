@@ -27,15 +27,22 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
+    @PatchMapping("/{memberId}")
+    public ResponseEntity<Void> modifyMember(@PathVariable Long memberId, @RequestBody @Valid ModifyMemberRequest request) {
+        validateSamePasswordConfirm(request);
+        memberService.modifyMember(memberId, request);
+        return ResponseEntity.ok().build();
+    }
+
     private void validateSamePasswordConfirm(SaveMemberRequest request) throws NotSamePasswordConfirmException {
         if (!request.getPassword().equals(request.getPasswordConfirm())) {
             throw new NotSamePasswordConfirmException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         }
     }
 
-    @PatchMapping("/{memberId}")
-    public ResponseEntity<Void> modifyMember(ModifyMemberRequest request) {
-        return ResponseEntity.ok().build();
+    private void validateSamePasswordConfirm(ModifyMemberRequest request) throws NotSamePasswordConfirmException {
+        if (!request.getPassword().equals(request.getPasswordConfirm())) {
+            throw new NotSamePasswordConfirmException("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
     }
-
 }

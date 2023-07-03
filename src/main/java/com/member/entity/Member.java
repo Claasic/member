@@ -1,11 +1,12 @@
 package com.member.entity;
 
+import com.member.request.ModifyMemberRequest;
+import com.member.request.SaveMemberRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -35,6 +36,20 @@ public class Member {
         this.name = name;
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public void modifyMember(ModifyMemberRequest request) {
+        this.nickname = request.getNickname();
+        this.password = request.getPassword();
+    }
+
+    public static Member of(SaveMemberRequest saveMemberRequest) {
+        return Member.builder()
+                .email(saveMemberRequest.getEmail())
+                .nickname(saveMemberRequest.getNickname())
+                .name(saveMemberRequest.getName())
+                .password(saveMemberRequest.getPassword())
+                .build();
     }
 
 }

@@ -1,8 +1,12 @@
 package com.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.member.entity.Member;
 import com.member.fixture.MemberFixture;
+import com.member.repository.MemberRepository;
+import com.member.request.ModifyMemberRequest;
 import com.member.request.SaveMemberRequest;
+import com.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +34,9 @@ class MemberControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     private RestDocumentationContextProvider restDocumentation;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("회원가입 성공")
@@ -183,6 +190,25 @@ class MemberControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Validated Error"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field").value("passwordConfirm"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].message").value("패스워드 확인 미입력"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("회원가입 수정 성공")
+    void updateMemberSuccess () throws Exception {
+
+        //given
+        Member saveMember = memberRepository.save(Member.of(MemberFixture.SAVE_SUCCESS_MEMBER));
+
+
+        ModifyMemberRequest req = MemberFixture.MODIFY_SUCCESS_MEMBER_REQUEST;
+        String json = objectMapper.writeValueAsString(req);
+
+        //expected
+        mockMvc.perform(MockMvcRequestBuilders.patch("/members/" + saveMember.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 }
